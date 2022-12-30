@@ -126,11 +126,11 @@ export const FileMenu = observer(({ store, project }) => {
         <div className={Classes.DIALOG_BODY}>
           <h2>Contact Us</h2>
           <p>
-            Canvas Studio created by <a href="https://www.peopleperhour.com/site/register?rfrd=5560900.5" target="_blank">
+            Canvas Studio created by <a href="https://www.peopleperhour.com/site/register?rfrd=5560900.5" target="_blank" rel="noreferrer">
             Vladislav Novikov
             </a>{' '}
             and is powered by{' '}
-            <a href="https://polotno.dev/" target="_blank">
+            <a href="https://polotno.dev/" target="_blank" rel="noreferrer">
               Polotno SDK project
             </a>
             .

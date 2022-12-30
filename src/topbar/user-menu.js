@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import {
@@ -19,7 +19,6 @@ export const UserMenu = observer(({ store }) => {
     loginWithPopup,
     isLoading,
     getAccessTokenSilently,
-    user,
     isAuthenticated,
     logout,
   } = useAuth0();
@@ -27,13 +26,14 @@ export const UserMenu = observer(({ store }) => {
   const [subscription, setSubscription] = React.useState(null);
   const [subModalOpen, toggleSubModal] = React.useState(false);
 
-  const loadSubscription = async () => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const loadSubscription = useCallback(async () => {
     setSubscriptionLoading(true);
     const accessToken = await getAccessTokenSilently({});
     const res = await api.getUserSubscription({ accessToken });
     setSubscription(res.subscription);
     setSubscriptionLoading(false);
-  };
+  });
 
   React.useEffect(() => {
     if (isLoading) {
@@ -43,7 +43,7 @@ export const UserMenu = observer(({ store }) => {
       return;
     }
     loadSubscription();
-  }, [isLoading, isAuthenticated, getAccessTokenSilently]);
+  }, [isLoading, isAuthenticated, getAccessTokenSilently, loadSubscription]);
 
   return (
     <>

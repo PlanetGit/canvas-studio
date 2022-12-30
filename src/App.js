@@ -7,12 +7,9 @@ import { Workspace } from 'polotno/canvas/workspace';
 import { useAuth0 } from '@auth0/auth0-react';
 
 import { loadFile } from './file';
-import { QrSection } from './sections/qr-section';
-// import { ThenounprojectSection } from './thenounproject-section';
-import { QuotesSection } from './sections/quotes-section';
+// import { QrSection } from './sections/qr-section';
 import { IconsSection } from './sections/icons-section';
 import { ShapesSection } from './sections/shapes-section';
-import { StableDiffusionSection } from './sections/stable-diffusion-section';
 import { MyDesignsSection } from './sections/my-designs-section';
 import { useProject } from './project';
 
@@ -27,10 +24,15 @@ DEFAULT_SECTIONS.splice(3, 1, ShapesSection);
 // add icons
 DEFAULT_SECTIONS.splice(3, 0, IconsSection);
 // add two more sections
-DEFAULT_SECTIONS.push(QuotesSection, QrSection);
+// DEFAULT_SECTIONS.push(QrSection);
 DEFAULT_SECTIONS.unshift(MyDesignsSection);
 
-DEFAULT_SECTIONS.push(StableDiffusionSection);
+console.log(DEFAULT_SECTIONS, '===DEFAULT_SECTIONS')
+
+const size = DEFAULT_SECTIONS.filter(v => v.name === 'size');
+const rest = DEFAULT_SECTIONS.filter(v => v.name !== 'size');
+const SECTIONS_LIST = [...size, ...rest];
+
 
 const useHeight = () => {
   const [height, setHeight] = React.useState(window.innerHeight);
@@ -48,6 +50,7 @@ const App = ({ store }) => {
 
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const load = () => {
     let url = new URL(window.location.href);
     // url example https://studio.polotno.com/design/5f9f1b0b
@@ -75,7 +78,7 @@ const App = ({ store }) => {
       project.authToken = null;
       load();
     }
-  }, [isAuthenticated, project, getAccessTokenSilently, isLoading]);
+  }, [isAuthenticated, project, getAccessTokenSilently, isLoading, load]);
 
   const handleDrop = (ev) => {
     // Prevent default behavior (Prevent file from being opened)
@@ -106,7 +109,7 @@ const App = ({ store }) => {
       <div style={{ height: 'calc(100% - 50px)' }}>
         <PolotnoContainer className="polotno-app-container">
           <SidePanelWrap>
-            <SidePanel store={store} sections={DEFAULT_SECTIONS} />
+            <SidePanel store={store} sections={SECTIONS_LIST} />
           </SidePanelWrap>
           <WorkspaceWrap>
             <Toolbar
