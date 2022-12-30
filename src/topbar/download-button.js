@@ -4,6 +4,7 @@ import { Button, Position, Menu, HTMLSelect, Slider } from '@blueprintjs/core';
 import { Popover2 } from '@blueprintjs/popover2';
 import * as unit from 'polotno/utils/unit';
 import { t } from 'polotno/utils/l10n';
+import { downloadFile } from 'polotno/utils/download';
 
 export const DownloadButton = observer(({ store }) => {
   const [saving, setSaving] = React.useState(false);
@@ -27,8 +28,8 @@ export const DownloadButton = observer(({ store }) => {
     <Popover2
       content={
         <Menu>
-          <li class="bp4-menu-header">
-            <h6 class="bp4-heading">File type</h6>
+          <li className="bp4-menu-header">
+            <h6 className="bp4-heading">File type</h6>
           </li>
           <HTMLSelect
             fill
@@ -41,54 +42,67 @@ export const DownloadButton = observer(({ store }) => {
             <option value="jpeg">JPEG</option>
             <option value="png">PNG</option>
             <option value="pdf">PDF</option>
+            <option value="json">JSON</option>
           </HTMLSelect>
-          <li class="bp4-menu-header">
-            <h6 class="bp4-heading">Size</h6>
-          </li>
-          <div style={{ padding: '10px' }}>
-            <Slider
-              value={quality}
-              labelRenderer={false}
-              // labelStepSize={0.4}
-              onChange={(quality) => {
-                setQuality(quality);
-              }}
-              stepSize={0.2}
-              min={0.2}
-              max={3}
-              showTrackFill={false}
-            />
-            {type === 'pdf' && (
-              <div>
-                {unit.pxToUnitRounded({
-                  px: store.width,
-                  dpi: store.dpi / quality,
-                  precious: 0,
-                  unit: 'mm',
-                })}{' '}
-                x{' '}
-                {unit.pxToUnitRounded({
-                  px: store.height,
-                  dpi: store.dpi / quality,
-                  precious: 0,
-                  unit: 'mm',
-                })}{' '}
-                mm
+          {type !== "json" ?
+            <>
+              <li className="bp4-menu-header">
+                <h6 className="bp4-heading">Size</h6>
+              </li>
+              <div style={{ padding: '10px' }}>
+                <Slider
+                  value={quality}
+                  labelRenderer={false}
+                  // labelStepSize={0.4}
+                  onChange={(quality) => {
+                    setQuality(quality);
+                  }}
+                  stepSize={0.2}
+                  min={0.2}
+                  max={3}
+                  showTrackFill={false}
+                />
+                {type === 'pdf' && (
+                  <div>
+                    {unit.pxToUnitRounded({
+                      px: store.width,
+                      dpi: store.dpi / quality,
+                      precious: 0,
+                      unit: 'mm',
+                    })}{' '}
+                    x{' '}
+                    {unit.pxToUnitRounded({
+                      px: store.height,
+                      dpi: store.dpi / quality,
+                      precious: 0,
+                      unit: 'mm',
+                    })}{' '}
+                    mm
+                  </div>
+                )}
+                {type !== 'pdf' && (
+                  <div>
+                    {Math.round(store.width * quality)} x{' '}
+                    {Math.round(store.height * quality)} px
+                  </div>
+                )}
               </div>
-            )}
-            {type !== 'pdf' && (
-              <div>
-                {Math.round(store.width * quality)} x{' '}
-                {Math.round(store.height * quality)} px
-              </div>
-            )}
-          </div>
+            </> : <div><br/></div>}
           <Button
             fill
             intent="primary"
             loading={saving}
             onClick={async () => {
-              if (type === 'pdf') {
+              if (type === 'json') {
+                const json = store.toJSON();
+                const url =
+                  'data:text/json;base64,' +
+                  window.btoa(
+                    unescape(encodeURIComponent(JSON.stringify(json)))
+                  );
+
+                downloadFile(url, 'canvas.json');
+              } else if (type === 'pdf') {
                 setSaving(true);
                 await store.saveAsPDF({
                   fileName: getName() + '.pdf',
@@ -113,33 +127,6 @@ export const DownloadButton = observer(({ store }) => {
           >
             Download {type.toUpperCase()}
           </Button>
-
-          {/* <MenuItem
-            icon="media"
-            text={t('toolbar.saveAsImage')}
-            onClick={async () => {
-              store.pages.forEach((page, index) => {
-                // do not add index if we have just one page
-                const indexString =
-                  store.pages.length > 1 ? '-' + (index + 1) : '';
-                store.saveAsImage({
-                  pageId: page.id,
-                  fileName: getName() + indexString + '.png',
-                });
-              });
-            }}
-          />
-          <MenuItem
-            icon="document"
-            text={t('toolbar.saveAsPDF')}
-            onClick={async () => {
-              setSaving(true);
-              await store.saveAsPDF({
-                fileName: getName() + '.pdf',
-              });
-              setSaving(false);
-            }}
-          /> */}
         </Menu>
       }
       position={Position.BOTTOM_RIGHT}
