@@ -31,7 +31,7 @@ export const ShapesPanel = ({ store }) => {
         }
         const x = (pos?.x || store.width / 2) - width / 2;
         const y = (pos?.y || store.height / 2) - height / 2;
-        const svg = store.activePage?.addElement({
+        store.activePage?.addElement({
           type: 'svg',
           width,
           height,

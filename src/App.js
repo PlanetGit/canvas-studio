@@ -17,17 +17,13 @@ import { ImageRemoveBackground } from './background-remover';
 
 import Topbar from './topbar/topbar';
 
-// DEFAULT_SECTIONS.splice(3, 0, IllustrationsSection);
 // replace elements section with just shapes
 DEFAULT_SECTIONS.splice(3, 1, ShapesSection);
-// DEFAULT_SECTIONS.splice(2, 0, StableDiffusionSection);
 // add icons
 DEFAULT_SECTIONS.splice(3, 0, IconsSection);
 // add two more sections
 // DEFAULT_SECTIONS.push(QrSection);
 DEFAULT_SECTIONS.unshift(MyDesignsSection);
-
-console.log(DEFAULT_SECTIONS, '===DEFAULT_SECTIONS')
 
 const size = DEFAULT_SECTIONS.filter(v => v.name === 'size');
 const rest = DEFAULT_SECTIONS.filter(v => v.name !== 'size');
