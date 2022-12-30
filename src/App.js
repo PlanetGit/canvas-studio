@@ -4,14 +4,11 @@ import { Toolbar } from 'polotno/toolbar/toolbar';
 import { ZoomButtons } from 'polotno/toolbar/zoom-buttons';
 import { SidePanel, DEFAULT_SECTIONS } from 'polotno/side-panel';
 import { Workspace } from 'polotno/canvas/workspace';
-import { useAuth0 } from '@auth0/auth0-react';
-
 import { loadFile } from './file';
 // import { QrSection } from './sections/qr-section';
 import { IconsSection } from './sections/icons-section';
 import { ShapesSection } from './sections/shapes-section';
 import { MyDesignsSection } from './sections/my-designs-section';
-import { useProject } from './project';
 
 import { ImageRemoveBackground } from './background-remover';
 
@@ -41,40 +38,7 @@ const useHeight = () => {
 };
 
 const App = ({ store }) => {
-  const project = useProject();
   const height = useHeight();
-
-  const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const load = () => {
-    let url = new URL(window.location.href);
-    // url example https://studio.polotno.com/design/5f9f1b0b
-    const reg = new RegExp('design/([a-zA-Z0-9_-]+)').exec(url.pathname);
-    const designId = (reg && reg[1]) || 'local';
-    project.loadById(designId);
-  };
-
-  React.useEffect(() => {
-    if (isLoading) {
-      return;
-    }
-    if (isAuthenticated) {
-      getAccessTokenSilently()
-        .then((token) => {
-          project.authToken = token;
-          load();
-        })
-        .catch((err) => {
-          project.authToken = null;
-          load();
-          console.log(err);
-        });
-    } else {
-      project.authToken = null;
-      load();
-    }
-  }, [isAuthenticated, project, getAccessTokenSilently, isLoading, load]);
 
   const handleDrop = (ev) => {
     // Prevent default behavior (Prevent file from being opened)
