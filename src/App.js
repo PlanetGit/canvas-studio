@@ -5,7 +5,7 @@ import { ZoomButtons } from 'polotno/toolbar/zoom-buttons';
 import { SidePanel, DEFAULT_SECTIONS } from 'polotno/side-panel';
 import { Workspace } from 'polotno/canvas/workspace';
 import { loadFile } from './file';
-// import { QrSection } from './sections/qr-section';
+import { QrSection } from './sections/qr-section';
 import { IconsSection } from './sections/icons-section';
 import { ShapesSection } from './sections/shapes-section';
 import { MyDesignsSection } from './sections/my-designs-section';
@@ -19,7 +19,7 @@ DEFAULT_SECTIONS.splice(3, 1, ShapesSection);
 // add icons
 DEFAULT_SECTIONS.splice(3, 0, IconsSection);
 // add two more sections
-// DEFAULT_SECTIONS.push(QrSection);
+DEFAULT_SECTIONS.push(QrSection);
 DEFAULT_SECTIONS.unshift(MyDesignsSection);
 
 const size = DEFAULT_SECTIONS.filter(v => v.name === 'size');

@@ -31,7 +31,7 @@ export default observer(({ store }) => {
     <NavbarContainer className="bp4-navbar">
       <NavInner>
         <Navbar.Group align={Alignment.LEFT}>
-          <h2>Milton Project</h2>
+          <h2>Canvas Studio for Milton</h2>
         </Navbar.Group>
         <Navbar.Group align={Alignment.RIGHT}>
           <FileMenu store={store} project={project} />
