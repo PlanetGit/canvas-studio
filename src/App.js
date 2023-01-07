@@ -19,7 +19,7 @@ DEFAULT_SECTIONS.splice(3, 1, ShapesSection);
 // add icons
 DEFAULT_SECTIONS.splice(3, 0, IconsSection);
 // add two more sections
-DEFAULT_SECTIONS.push(QrSection);
+// DEFAULT_SECTIONS.push(QrSection);
 DEFAULT_SECTIONS.unshift(MyDesignsSection);
 
 const size = DEFAULT_SECTIONS.filter(v => v.name === 'size');
