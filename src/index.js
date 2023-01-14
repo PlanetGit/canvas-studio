@@ -12,7 +12,7 @@ import App from './App';
 
 unstable_setRemoveBackgroundEnabled(true);
 
-const store = createStore({ key: 'nFA5H9elEytDyPyvKL7T' });
+const store = createStore({ key: 'WajgG3AAxFqz039-5doZ' });
 window.store = store;
 store.addPage();
 
