@@ -1,7 +1,7 @@
 {
-  "name": "polotno-studio",
+  "name": "canvas-studio",
   "version": "0.1.1",
-  "author": "Anton Lavrenov",
+  "author": "Vladislav Novikov",
   "description": "Free design editor",
   "private": true,
   "dependencies": {
